@@ -172,6 +172,10 @@ input[type="text"], textarea {
   color: #333;
 }
 
+.questionnaire-intro-box {
+  text-align: left;
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -257,6 +261,111 @@ input[type="text"], textarea {
   border-radius: 10px;
   margin-bottom: 20px;
   box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.questionnaire-content {
+  text-align: left;
+}
+
+.questionnaire-form {
+  width: 100%;
+}
+
+.questionnaire-section {
+  margin-bottom: 20px;
+}
+
+.questionnaire-subtitle {
+  font-size: 20px;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #334155;
+}
+
+.questionnaire-prompt {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.questionnaire-example {
+  margin-top: -4px;
+  margin-bottom: 16px;
+  color: #475569;
+}
+
+.questionnaire-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.questionnaire-grid-numbered {
+  grid-template-columns: 1fr;
+}
+
+.questionnaire-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.questionnaire-field-full {
+  grid-column: 1 / -1;
+}
+
+.questionnaire-field input[type="text"],
+.questionnaire-field input[type="number"] {
+  margin-top: 0;
+  background-color: #fff;
+}
+
+.questionnaire-fieldset {
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin: 0 0 20px 0;
+  background-color: #f8fafc;
+}
+
+.questionnaire-fieldset legend {
+  font-size: 17px;
+  font-weight: 600;
+  padding: 0 8px;
+  color: #1e293b;
+}
+
+.questionnaire-fieldset label {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.questionnaire-fieldset label:last-child {
+  margin-bottom: 0;
+}
+
+.questionnaire-fieldset input[type="radio"] {
+  margin-right: 10px;
+}
+
+.questionnaire-field-group {
+  margin-bottom: 24px;
+}
+
+.questionnaire-page-actions {
+  text-align: center;
+  margin-top: 24px;
+}
+
+.questionnaire-section-optional {
+  margin-bottom: 0;
 }
 
 .jspsych-survey-text-question p {

@@ -78,6 +78,55 @@ function sentenceTrialScreen({ englishTitle, englishParagraphs, chineseTitle, ch
   `;
 }
 
+function getFormValue(form, name) {
+  const fields = form.querySelectorAll(`[name="${name}"]`);
+
+  if (fields.length === 0) {
+    return "";
+  }
+
+  if (fields[0].type === "checkbox") {
+    return Array.from(fields)
+      .filter((field) => field.checked)
+      .map((field) => field.value)
+      .join("; ");
+  }
+
+  if (fields[0].type === "radio") {
+    const checked = form.querySelector(`[name="${name}"]:checked`);
+    return checked ? checked.value : "";
+  }
+
+  return fields[0].value.trim();
+}
+
+function collectFormData(form, fieldNames = []) {
+  return fieldNames.reduce((data, fieldName) => {
+    data[fieldName] = getFormValue(form, fieldName);
+    return data;
+  }, {});
+}
+
+function buildQuestionnairePage({ formId, stimulus, fieldNames, trialStage, questionnairePage }) {
+  return {
+    type: jsPsychHtmlKeyboardResponse,
+    stimulus,
+    choices: "NO_KEYS",
+    data: {
+      trial_stage: trialStage,
+      questionnaire_page: questionnairePage
+    },
+    on_load: function() {
+      const form = document.getElementById(formId);
+
+      form.addEventListener("submit", function(event) {
+        event.preventDefault();
+        jsPsych.finishTrial(collectFormData(form, fieldNames));
+      });
+    }
+  };
+}
+
 function queueAudioUpload(data, filename) {
   if (!datapipeConfigured) {
     console.warn("DataPipe experiment ID is not configured. Audio upload was skipped.");
@@ -595,6 +644,312 @@ const shuffled_trials = randomize_trials(trial_objects);
 shuffled_trials.forEach(trial_obj => {
   timeline.push(buildSentenceTrial(trial_obj));
 });
+
+const questionnaireIntro = {
+  type: jsPsychHtmlButtonResponse,
+  stimulus: `
+    <div class="content">
+      <div class="begin-box questionnaire-intro-box">
+        ${languageBlock({
+          label: "English",
+          title: "First Part of the Experiment",
+          paragraphs: [
+            "Before the recording portion begins, please complete a short Language Background Questionnaire.",
+            "This is the first part of the experiment.",
+            `Click "${uiLabels.continue}" to begin the questionnaire.`
+          ]
+        })}
+        ${languageBlock({
+          label: "中文",
+          title: "实验第一部分",
+          paragraphs: [
+            "在录音部分开始之前，请先完成一个简短的语言背景问卷。",
+            "这是实验的第一部分。",
+            `点击“${uiLabels.continue}”开始填写问卷。`
+          ]
+        })}
+      </div>
+    </div>
+  `,
+  choices: [uiLabels.continue],
+  data: {
+    trial_stage: "questionnaire_intro"
+  }
+};
+const questionnaireBasicInfo = buildQuestionnairePage({
+  formId: "language-questionnaire-basic",
+  trialStage: "language_questionnaire_basic",
+  questionnairePage: "basic_information",
+  fieldNames: [
+    "age",
+    "date_of_birth",
+    "gender",
+    "gender_self_describe",
+    "ethnicity",
+    "ethnicity_other",
+    "country_of_birth",
+    "city_of_birth",
+    "years_in_us",
+    "age_moved_to_us"
+  ],
+  stimulus: `
+    <form id="language-questionnaire-basic" class="questionnaire-form">
+      <div class="content questionnaire-content">
+        <div class="instruction-box questionnaire-section">
+          <h2>Language Background Questionnaire</h2>
+          <p class="questionnaire-subtitle">Basic Information</p>
+
+          <div class="questionnaire-grid">
+            <label class="questionnaire-field">
+              <span>Age</span>
+              <input type="number" name="age" min="0" inputmode="numeric">
+            </label>
+
+            <label class="questionnaire-field">
+              <span>Date of birth (Month/Day/Year)</span>
+              <input type="text" name="date_of_birth" placeholder="MM/DD/YYYY">
+            </label>
+          </div>
+
+          <fieldset class="questionnaire-fieldset">
+            <legend>Gender</legend>
+            <label><input type="radio" name="gender" value="Female"> Female</label>
+            <label><input type="radio" name="gender" value="Male"> Male</label>
+            <label><input type="radio" name="gender" value="Non-binary"> Non-binary</label>
+            <label><input type="radio" name="gender" value="Prefer to self-describe"> Prefer to self-describe</label>
+            <label><input type="radio" name="gender" value="Prefer not to say"> Prefer not to say</label>
+          </fieldset>
+
+          <label class="questionnaire-field">
+            <span>If you selected "Prefer to self-describe," please describe here</span>
+            <input type="text" name="gender_self_describe">
+          </label>
+
+          <fieldset class="questionnaire-fieldset">
+            <legend>Ethnicity (Select all that apply)</legend>
+            <label><input type="checkbox" name="ethnicity" value="American Indian or Alaska Native"> American Indian or Alaska Native</label>
+            <label><input type="checkbox" name="ethnicity" value="Asian"> Asian</label>
+            <label><input type="checkbox" name="ethnicity" value="Black or African American"> Black or African American</label>
+            <label><input type="checkbox" name="ethnicity" value="Hispanic or Latino"> Hispanic or Latino</label>
+            <label><input type="checkbox" name="ethnicity" value="Native Hawaiian or Other Pacific Islander"> Native Hawaiian or Other Pacific Islander</label>
+            <label><input type="checkbox" name="ethnicity" value="White"> White</label>
+            <label><input type="checkbox" name="ethnicity" value="Multiracial"> Multiracial</label>
+            <label><input type="checkbox" name="ethnicity" value="Other"> Other</label>
+            <label><input type="checkbox" name="ethnicity" value="Prefer not to say"> Prefer not to say</label>
+          </fieldset>
+
+          <label class="questionnaire-field">
+            <span>If you selected "Other," please describe here</span>
+            <input type="text" name="ethnicity_other">
+          </label>
+
+          <div class="questionnaire-grid">
+            <label class="questionnaire-field">
+              <span>Country of birth</span>
+              <input type="text" name="country_of_birth">
+            </label>
+
+            <label class="questionnaire-field">
+              <span>City of birth</span>
+              <input type="text" name="city_of_birth">
+            </label>
+          </div>
+
+          <div class="questionnaire-grid">
+            <label class="questionnaire-field">
+              <span>How many years have you lived in the United States?</span>
+              <input type="number" name="years_in_us" min="0" step="0.1" inputmode="decimal">
+            </label>
+
+            <label class="questionnaire-field">
+              <span>If not born in the U.S., at what age did you move to the U.S.?</span>
+              <input type="number" name="age_moved_to_us" min="0" inputmode="numeric">
+            </label>
+          </div>
+        </div>
+
+        <div class="questionnaire-page-actions">
+          <button type="submit" class="jspsych-btn">${uiLabels.continue}</button>
+        </div>
+      </div>
+    </form>
+  `
+});
+const questionnaireLanguageBackground = buildQuestionnairePage({
+  formId: "language-questionnaire-background",
+  trialStage: "language_questionnaire_background",
+  questionnairePage: "language_background",
+  fieldNames: [
+    "languages_spoken_1",
+    "languages_spoken_2",
+    "languages_spoken_3",
+    "languages_spoken_4",
+    "languages_spoken_5",
+    "language_dominance_1",
+    "language_dominance_2",
+    "language_dominance_3",
+    "language_dominance_4",
+    "language_dominance_5",
+    "first_language",
+    "english_learning_age",
+    "mandarin_learning_age"
+  ],
+  stimulus: `
+    <form id="language-questionnaire-background" class="questionnaire-form">
+      <div class="content questionnaire-content">
+        <div class="instruction-box questionnaire-section">
+          <h2>Language Background</h2>
+
+          <div class="questionnaire-field-group">
+            <p class="questionnaire-prompt">What languages do you speak? (Please list all languages you know)</p>
+            <div class="questionnaire-grid questionnaire-grid-numbered">
+              <label class="questionnaire-field">
+                <span>1.</span>
+                <input type="text" name="languages_spoken_1">
+              </label>
+              <label class="questionnaire-field">
+                <span>2.</span>
+                <input type="text" name="languages_spoken_2">
+              </label>
+              <label class="questionnaire-field">
+                <span>3.</span>
+                <input type="text" name="languages_spoken_3">
+              </label>
+              <label class="questionnaire-field">
+                <span>4.</span>
+                <input type="text" name="languages_spoken_4">
+              </label>
+              <label class="questionnaire-field">
+                <span>5.</span>
+                <input type="text" name="languages_spoken_5">
+              </label>
+            </div>
+          </div>
+
+          <div class="questionnaire-field-group">
+            <p class="questionnaire-prompt">Please rank the languages you speak in order of dominance (1 = most dominant)</p>
+            <p class="questionnaire-example">Example: 1. Mandarin, 2. English, 3. Cantonese</p>
+            <div class="questionnaire-grid questionnaire-grid-numbered">
+              <label class="questionnaire-field">
+                <span>1.</span>
+                <input type="text" name="language_dominance_1">
+              </label>
+              <label class="questionnaire-field">
+                <span>2.</span>
+                <input type="text" name="language_dominance_2">
+              </label>
+              <label class="questionnaire-field">
+                <span>3.</span>
+                <input type="text" name="language_dominance_3">
+              </label>
+              <label class="questionnaire-field">
+                <span>4.</span>
+                <input type="text" name="language_dominance_4">
+              </label>
+              <label class="questionnaire-field">
+                <span>5.</span>
+                <input type="text" name="language_dominance_5">
+              </label>
+            </div>
+          </div>
+
+          <label class="questionnaire-field">
+            <span>What is your first language (native language)?</span>
+            <input type="text" name="first_language">
+          </label>
+
+          <fieldset class="questionnaire-fieldset">
+            <legend>At what age did you begin learning English?</legend>
+            <label><input type="radio" name="english_learning_age" value="From birth"> From birth</label>
+            <label><input type="radio" name="english_learning_age" value="Ages 1-5"> Ages 1-5</label>
+            <label><input type="radio" name="english_learning_age" value="Ages 6-10"> Ages 6-10</label>
+            <label><input type="radio" name="english_learning_age" value="Ages 11-15"> Ages 11-15</label>
+            <label><input type="radio" name="english_learning_age" value="16+"> 16+</label>
+            <label><input type="radio" name="english_learning_age" value="N/A"> N/A</label>
+          </fieldset>
+
+          <fieldset class="questionnaire-fieldset">
+            <legend>At what age did you begin learning Mandarin?</legend>
+            <label><input type="radio" name="mandarin_learning_age" value="From birth"> From birth</label>
+            <label><input type="radio" name="mandarin_learning_age" value="Ages 1-5"> Ages 1-5</label>
+            <label><input type="radio" name="mandarin_learning_age" value="Ages 6-10"> Ages 6-10</label>
+            <label><input type="radio" name="mandarin_learning_age" value="Ages 11-15"> Ages 11-15</label>
+            <label><input type="radio" name="mandarin_learning_age" value="16+"> 16+</label>
+            <label><input type="radio" name="mandarin_learning_age" value="N/A"> N/A</label>
+          </fieldset>
+        </div>
+
+        <div class="questionnaire-page-actions">
+          <button type="submit" class="jspsych-btn">${uiLabels.continue}</button>
+        </div>
+      </div>
+    </form>
+  `
+});
+const questionnaireLanguageUse = buildQuestionnairePage({
+  formId: "language-questionnaire-use",
+  trialStage: "language_questionnaire_use",
+  questionnairePage: "language_use_and_proficiency",
+  fieldNames: [
+    "language_home",
+    "language_friends",
+    "language_daily_life",
+    "mandarin_proficiency",
+    "english_proficiency"
+  ],
+  stimulus: `
+    <form id="language-questionnaire-use" class="questionnaire-form">
+      <div class="content questionnaire-content">
+        <div class="instruction-box questionnaire-section">
+          <h2>Language Use and Proficiency</h2>
+
+          <div class="questionnaire-grid">
+            <label class="questionnaire-field">
+              <span>Which language do you speak most often at home?</span>
+              <input type="text" name="language_home">
+            </label>
+
+            <label class="questionnaire-field">
+              <span>Which language do you speak most often with friends?</span>
+              <input type="text" name="language_friends">
+            </label>
+
+            <label class="questionnaire-field questionnaire-field-full">
+              <span>Which language do you use most often in daily life?</span>
+              <input type="text" name="language_daily_life">
+            </label>
+          </div>
+
+          <fieldset class="questionnaire-fieldset">
+            <legend>How would you rate your proficiency in Mandarin?</legend>
+            <label><input type="radio" name="mandarin_proficiency" value="Native / near-native"> Native / near-native</label>
+            <label><input type="radio" name="mandarin_proficiency" value="Advanced"> Advanced</label>
+            <label><input type="radio" name="mandarin_proficiency" value="Intermediate"> Intermediate</label>
+            <label><input type="radio" name="mandarin_proficiency" value="Beginner"> Beginner</label>
+          </fieldset>
+
+          <fieldset class="questionnaire-fieldset">
+            <legend>How would you rate your proficiency in English?</legend>
+            <label><input type="radio" name="english_proficiency" value="Native / near-native"> Native / near-native</label>
+            <label><input type="radio" name="english_proficiency" value="Advanced"> Advanced</label>
+            <label><input type="radio" name="english_proficiency" value="Intermediate"> Intermediate</label>
+            <label><input type="radio" name="english_proficiency" value="Beginner"> Beginner</label>
+          </fieldset>
+        </div>
+
+        <div class="questionnaire-page-actions">
+          <button type="submit" class="jspsych-btn">${uiLabels.continue}</button>
+        </div>
+      </div>
+    </form>
+  `
+});
+timeline.splice(1, 0,
+  questionnaireIntro,
+  questionnaireBasicInfo,
+  questionnaireLanguageBackground,
+  questionnaireLanguageUse
+);
 
 if (datapipeConfigured) {
   const save_data = {
