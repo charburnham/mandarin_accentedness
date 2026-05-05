@@ -1,0 +1,472 @@
+body,
+.jspsych-content,
+.jspsych-content-wrapper {
+  font-family: 'Inter', sans-serif;
+}
+
+.language-block {
+  text-align: left;
+}
+
+.language-block + .language-block {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+.language-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.language-block h2,
+.language-block h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.language-block p:last-child,
+.language-block ul:last-child {
+  margin-bottom: 0;
+}
+
+body {
+  background-color: #f4f6f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.jspsych-content-wrapper {
+  max-width: 1000px;
+  margin: 50px auto;
+  padding: 20px 40px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  animation: fadeIn 0.6s ease;
+}
+
+.jspsych-btn {
+  font-size: 14px;
+  padding: 10px 20px;
+  margin: 10px;
+  border-radius: 8px;
+  background-color: #64748b;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.jspsych-btn:hover {
+  background-color: #475569;
+}
+
+h1, h2 {
+  color: #2c3e50;
+}
+
+p {
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+em {
+  color: #555;
+}
+
+.content {
+  margin-top: 20px;
+}
+
+li {
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+input[type="text"], textarea {
+  padding: 8px;
+  font-size: 16px;
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  margin-top: 5px;
+}
+
+.part-box {
+  background-color: #eef6ff;
+  padding: 15px 20px;
+  margin: 20px 0;
+  border-radius: 8px;
+}
+
+.instruction-box {
+  background-color: #eef6ff;
+  padding: 15px 20px;
+  margin: 20px 0;
+  border-radius: 8px;
+  animation: fadeIn 0.6s ease;
+}
+
+.tip-box {
+  background-color: #e8f5e9;
+  padding: 15px 20px;
+  margin: 20px 0;
+  border-radius: 8px;
+}
+
+.jspsych-instructions-nav {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.mic-confirm-box {
+  margin: 20px 0;
+  font-size: 16px;
+}
+
+.mic-confirm-box input[type="radio"] {
+  margin-right: 8px;
+}
+
+.recording-box {
+  background-color: #fff5f5;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  animation: fadeIn 0.6s ease;
+}
+
+.recording-box h3 {
+  margin-top: 0;
+  color: #b91c1c;
+}
+
+.recording-box p {
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.begin-box {
+  background-color: #e0f2fe;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  animation: fadeInUp 0.6s ease;
+}
+
+.begin-box h2 {
+  margin-top: 0;
+  font-size: 28px;
+  color: #1d4ed8;
+}
+
+.begin-box p {
+  font-size: 18px;
+  color: #333;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stimulus-box {
+  background-color: #ffffff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  text-align: center;
+  margin-top: 20px;
+  animation: fadeIn 0.6s ease;
+}
+
+.stimulus-image {
+  max-width: 120px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.stimulus-desc {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.stimulus-caption {
+  font-size: 18px;
+  color: #000000;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.question-context {
+  margin-bottom: 20px;
+}
+
+.context-box {
+  background-color: #f9fafb;
+  padding: 18px 24px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.context-box p {
+  font-size: 17px;
+  margin: 6px 0;
+  color: #333;
+}
+
+.jspsych-survey-multi-choice-option label {
+  display: block;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  background-color: #f1f5f9;
+  cursor: pointer;
+  transition: background-color 0.4s ease;
+}
+
+.jspsych-survey-multi-choice-option input[type="radio"] {
+  margin-right: 10px;
+}
+
+.jspsych-survey-multi-choice-option:hover {
+  background-color: #e0f2fe;
+}
+
+.jspsych-survey-text-question {
+  background-color: #f9fafb;
+  padding: 18px 24px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.jspsych-survey-text-question p {
+  font-size: 17px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.jspsych-survey-text-question input[type="text"],
+.jspsych-survey-text-question textarea {
+  padding: 10px 12px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 8px;
+  background-color: #ffffff;
+}
+
+.jspsych-survey-text-question input[type="text"]:focus,
+.jspsych-survey-text-question textarea:focus {
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.recording-instructions-box {
+  background-color: #fefce8;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  text-align: center;
+  animation: fadeIn 0.4s ease;
+}
+
+.recording-instructions-box h2 {
+  margin-top: 0;
+  font-size: 24px;
+  color: #92400e;
+}
+
+.recording-instructions-box p {
+  font-size: 17px;
+  margin: 10px 0;
+}
+
+.sentence-stimulus {
+  max-width: 760px;
+  margin: 20px auto 0;
+  font-size: 17px;
+  line-height: 1.35;
+  font-weight: 600;
+  color: #1f2937;
+  white-space: pre-line;
+  font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+}
+
+.recording-screen-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.sentence-panel {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 24px 28px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  text-align: center;
+}
+
+.sentence-panel-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.sentence-panel .sentence-stimulus {
+  margin-top: 14px;
+}
+
+.sentence-panel-note {
+  margin: 16px 0 0;
+  font-size: 16px;
+  color: #475569;
+}
+
+.playback-audio {
+  display: block;
+  width: min(100%, 520px);
+  margin: 24px auto 0;
+}
+
+.recording-session-box {
+  background-color: #fff5f5;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.recording-session-box h3 {
+  color: #b91c1c;
+  font-size: 22px;
+  margin-top: 0;
+  font-weight: 600;
+}
+
+.recording-dot {
+  margin-right: 6px;
+}
+
+.selected-question-label {
+  margin-top: 20px;
+  font-size: 17px;
+  font-weight: 500;
+  color: #333;
+}
+
+.selected-question {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 10px 0 20px;
+  color: #1f2937;
+}
+
+.recording-note {
+  font-size: 16px;
+  color: #555;
+  font-style: italic;
+}
+
+.saving-box {
+  background-color: #ecfdf5;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  animation: fadeIn 0.4s ease;
+}
+
+.saving-box h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #047857;
+}
+
+.saving-box p {
+  margin-top: 10px;
+  font-size: 18px;
+  color: #333;
+}
+
+.completion-box {
+  background-color: #f0fdf4;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  animation: fadeIn 0.5s ease;
+}
+
+.completion-box h2 {
+  margin-top: 0;
+  font-size: 26px;
+  color: #15803d;
+}
+
+.completion-box p {
+  font-size: 18px;
+  color: #333;
+  margin-top: 10px;
+}
+
+#jspsych-progressbar-container {
+  background-color: #f1f5f9;
+  padding: 10px 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+}
+
+#jspsych-progressbar-outer {
+  width: 90%;
+  margin: 0 auto;
+  height: 10px;
+  background-color: #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#jspsych-progressbar-inner {
+  height: 100%;
+  background: linear-gradient(to right, #f0f2f7, #2563eb);
+  width: 0%;
+  transition: width 0.4s ease;
+  border-radius: 8px;
+}
+
+.jspsych-content .consent p {
+  font-size: 16px !important;
+  line-height: 1.4;
+  text-align: justify;
+}
+
+.jspsych-content .consent h3 {
+  font-size: 18px !important;
+  line-height: 1.4;
+}
