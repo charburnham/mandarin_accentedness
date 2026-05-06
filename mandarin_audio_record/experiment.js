@@ -8,13 +8,19 @@ const jsPsych = initJsPsych({
 });
 
 const subject_id = jsPsych.randomization.randomID(10);
-const DATAPIPE_EXPERIMENT_ID = "khJ8Nh63lw9p";
+const DATAPIPE_EXPERIMENT_ID = "OmPYqZnSZnQm";
+const DATAPIPE_OSF_PROJECT = "8eurc";
+const DATAPIPE_OSF_COMPONENT = "mzhwb";
 const datapipeConfigured = DATAPIPE_EXPERIMENT_ID.trim() !== "";
 const data_filename = `${subject_id}_data.csv`;
 const timeline = [];
+const pendingAudioUploads = [];
 
 jsPsych.data.addProperties({
-  subject_id: subject_id
+  subject_id: subject_id,
+  datapipe_experiment_id: DATAPIPE_EXPERIMENT_ID,
+  osf_project_id: DATAPIPE_OSF_PROJECT,
+  osf_data_component_id: DATAPIPE_OSF_COMPONENT
 });
 
 const uiLabels = {
@@ -135,7 +141,8 @@ function queueAudioUpload(data, filename) {
     return;
   }
 
-  jsPsychPipe.saveBase64Data(DATAPIPE_EXPERIMENT_ID, filename, data.response);
+  const uploadPromise = jsPsychPipe.saveBase64Data(DATAPIPE_EXPERIMENT_ID, filename, data.response);
+  pendingAudioUploads.push(uploadPromise);
   data.response = filename;
   data.audio_upload = "queued";
 }
@@ -952,6 +959,33 @@ timeline.splice(1, 0,
 );
 
 if (datapipeConfigured) {
+  const wait_for_audio_uploads = {
+    type: jsPsychCallFunction,
+    async: true,
+    func: async function(done) {
+      if (pendingAudioUploads.length === 0) {
+        done({
+          pending_audio_uploads: 0,
+          audio_upload_wait_status: "no_audio_uploads_pending"
+        });
+        return;
+      }
+
+      const results = await Promise.allSettled(pendingAudioUploads);
+      const failedUploads = results.filter((result) => {
+        return result.status === "rejected" || result.value?.error;
+      }).length;
+
+      done({
+        pending_audio_uploads: results.length,
+        failed_audio_uploads: failedUploads,
+        audio_upload_wait_status: failedUploads > 0 ? "completed_with_errors" : "completed"
+      });
+    },
+    data: {
+      trial_stage: "wait_for_audio_uploads"
+    }
+  };
   const save_data = {
     type: jsPsychPipe,
     action: "save",
@@ -960,6 +994,7 @@ if (datapipeConfigured) {
     data_string: () => jsPsych.data.get().csv()
   };
 
+  timeline.push(wait_for_audio_uploads);
   timeline.push(save_data);
 }
 
